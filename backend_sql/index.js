@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/select', (req, res) => {
-  console.log(req.body);
-  const { query } = req.body;
+  console.log(req.body.query);
+  const { query } = req.body.query;
   if (!query) {
     return res.status(400).send('Query is required');
   }
