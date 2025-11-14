@@ -38,6 +38,7 @@ app.post('/select', (req, res) => {
       console.error('Error executing query:', error.stack);
       return res.status(500).send('Error executing query');
     }
+    console.log("Query executed successfully");
     res.json(results);
   });
 });
