@@ -5,17 +5,18 @@ import { Injectable } from '@angular/core';
 })
 export class BggSqlMngrrService {
 
-  postData(url: string, data: any): any {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', url, false); // Synchronous request
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(data));
-
-    if (xhr.status >= 200 && xhr.status < 300) {
-      return JSON.parse(xhr.responseText);
-    } else {
-      throw new Error(`HTTP error! status: ${xhr.status}`);
+  private async postData(url: string, data: any): Promise<any> {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: data
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    return response.json();
   }
 
   constructor() {
