@@ -40,7 +40,8 @@ app.post('/select', (req, res) => {
       return res.status(500).send('Error executing query');
     }
     console.log("Query executed successfully");
-    res.json(results);
+    console.log(results);
+    res.status(200).json(results);
   });
 });
 
