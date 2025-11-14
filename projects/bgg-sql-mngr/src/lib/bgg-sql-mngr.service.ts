@@ -23,7 +23,7 @@ export class BggSqlMngrrService {
   }
 
   select(query: string): any {
-    return this.postData('http://192.168.1.7:7777', { query });
+    return this.postData('http://192.168.1.7:7777/select', { query: query });
   }
 
 }

@@ -28,7 +28,8 @@ app.get('/', (req, res) => {
 
 app.post('/select', (req, res) => {
   app.use(bodyParser.json());
-  const { query } = req.body;
+  console.log('request body:', req.body);
+  const { query } = req.body.query;
   if (!query) {
     return res.status(400).send('Query is required');
   }
