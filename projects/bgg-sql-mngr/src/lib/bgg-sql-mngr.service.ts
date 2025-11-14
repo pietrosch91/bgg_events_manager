@@ -11,7 +11,7 @@ export class BggSqlMngrrService {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: data
+      body: "Pippo"
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

@@ -21,15 +21,15 @@ connection.connect((err) => {
 });
 
 app.use(cors());
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.send('Server is running!');
 });
 
 app.post('/select', (req, res) => {
-  app.use(bodyParser.json());
-  console.log('request body:', req);
-  const { query } = req.body.query;
+  console.log(req.body);
+  const { query } = req.body;
   if (!query) {
     return res.status(400).send('Query is required');
   }
