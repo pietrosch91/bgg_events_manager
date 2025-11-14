@@ -12,6 +12,8 @@ export class AppComponent {
   title = 'test_app';
 
   constructor(private bggsql: BggSqlMngrrService){
-    this.bggsql.executeSelectQuery("SELECT * FROM BGG");
+    var data=this.bggsql.select("SELECT * FROM BGG");
+    console.log(data);
+
   }
 }

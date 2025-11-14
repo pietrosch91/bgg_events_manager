@@ -1,7 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 const app = express();
 const PORT = 7777;
 
@@ -19,6 +19,8 @@ connection.connect((err) => {
   }
   console.log('Connected to the database as id ' + connection.threadId);
 });
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Server is running!');
