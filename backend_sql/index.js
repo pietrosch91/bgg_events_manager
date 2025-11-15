@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const BggSqlMngrService = require('./searchbgg');
 const app = express();
 const PORT = 7777;
 
@@ -42,6 +43,17 @@ app.post('/select', (req, res) => {
     console.log("Query executed successfully");
     console.log(results);
     res.status(200).json(results);
+  });
+});
+
+app.post('/search', (req, res) => {
+  console.log(req.body.title);
+  const title  = req.body.title;
+  results=BggSqlMngrService.searchTitle(title).then((results)=>{
+    res.status(200).json({result:results})
+  }).catch((error)=>{
+    console.error('Error searching title:', error);
+    res.status(500).send('Error searching title');
   });
 });
 

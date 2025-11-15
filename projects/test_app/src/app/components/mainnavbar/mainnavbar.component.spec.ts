@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BggSqlMngrComponent } from './bgg-sql-mngr.component';
+import { MainnavbarComponent } from './mainnavbar.component';
 
-describe('BggSqlMngrComponent', () => {
-  let component: BggSqlMngrComponent;
-  let fixture: ComponentFixture<BggSqlMngrComponent>;
+describe('MainnavbarComponent', () => {
+  let component: MainnavbarComponent;
+  let fixture: ComponentFixture<MainnavbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BggSqlMngrComponent]
+      imports: [MainnavbarComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BggSqlMngrComponent);
+    fixture = TestBed.createComponent(MainnavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

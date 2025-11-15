@@ -3,5 +3,7 @@
  */
 
 export * from './lib/bgg-sql-mngr.service';
-export * from './lib/bgg-sql-mngr.component';
 export * from './lib/bgg-sql-mngr.module';
+export * from './lib/dataclasses/bgg-info';
+export * from './lib/dataclasses/bgg-interfaces';
+

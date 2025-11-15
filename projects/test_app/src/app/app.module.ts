@@ -3,18 +3,26 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BggSqlMngrModule } from 'bgg-sql-mngr';
+import { BggSqlMngrModule, BggSqlMngrService } from 'bgg-sql-mngr';
+import { MainnavbarComponent } from "./components/mainnavbar/mainnavbar.component";
+import { PpbarcodeComponent } from './components/popups/ppbarcode/ppbarcode.component';
+import { BarcodepanelComponent } from './components/panels/barcodepanel/barcodepanel.component';
+import { A11yModule } from '@angular/cdk/a11y'
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PpbarcodeComponent,
+    BarcodepanelComponent
   ],
   imports: [
     BggSqlMngrModule,
     BrowserModule,
     AppRoutingModule,
-  ],
-  providers: [],
+    MainnavbarComponent,
+    A11yModule
+],
+  providers: [BggSqlMngrService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,11 @@
+
+<div class="navbar navbar-main" height="48px">
+  <img class="navicon" src="logo.png">
+  @for (m of list_of_menus; track $index) {
+    <div [class]="get_class('dropdown',m)">
+      <button class="dropbtn" (click)="selected_menu=m">{{list_of_menu_names[$index]}}</button>
+    </div>
+  }
+</div>
+
+

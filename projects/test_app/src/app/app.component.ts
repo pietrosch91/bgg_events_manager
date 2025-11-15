@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BggSqlMngrrService } from 'bgg-sql-mngr';
+import { BggSqlMngrService } from 'bgg-sql-mngr';
 
 
 @Component({
@@ -11,9 +11,7 @@ import { BggSqlMngrrService } from 'bgg-sql-mngr';
 export class AppComponent {
   title = 'test_app';
 
-  constructor(private bggsql: BggSqlMngrrService){
-    var data=this.bggsql.select("SELECT * FROM BGG");
-    console.log(data);
-
+  constructor(private bggsql: BggSqlMngrService){
+    this.bggsql.select("SELECT * FROM BGG").then(data => {console.log(data);});
   }
 }

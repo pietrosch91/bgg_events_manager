@@ -1,0 +1,20 @@
+
+@if(is_shown){
+  <div class="modal-overlay" (click)="$event.stopPropagation()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <table width="100%">
+        <tr>
+          <td>Insert or scan Barcode</td>
+          <td><input [cdkTrapFocusAutoCapture]="is_shown" [cdkTrapFocus]="is_shown" type="text" #nome (keypress)="onKeyPressed($event)" (input)="onInputChange(nome.value)"></td>
+        </tr>
+      </table>
+      <div display="flex">
+        <button type="button" (click)="barcode=(nome.value);confirm()">Ok</button>
+        <a></a>
+        <button type="button" (click)="close()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}
+
+
