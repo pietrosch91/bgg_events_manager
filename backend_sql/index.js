@@ -63,3 +63,6 @@ app.post('/search',async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
+
+
+await BggSqlMngrService.searchTitle("Quarto");
