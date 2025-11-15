@@ -1,8 +1,9 @@
-const express = require('express');
-const mysql = require('mysql2');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const BggSqlMngrService = require('./searchbgg');
+import express from 'express';
+import mysql from 'mysql2';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import BggSqlMngrService from './searchbgg.js';
+
 const app = express();
 const PORT = 7777;
 

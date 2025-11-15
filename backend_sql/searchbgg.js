@@ -1,5 +1,5 @@
-const fetch = require('node-fetch');
-const { JSDOM } = require('jsdom');
+import fetch from 'node-fetch';
+import { HTMLElement, parse } from 'node-html-parser';
 
 class BggSqlMngrService {
   static charToEncode = ['!', '#', '$', '&', '\'', '(', ')', '*', '+', ',', '/', ':', ';', '=', '?', '@', '[', ']'];
@@ -42,4 +42,4 @@ class BggSqlMngrService {
   }
 }
 
-module.exports = BggSqlMngrService;
+export default BggSqlMngrService;
