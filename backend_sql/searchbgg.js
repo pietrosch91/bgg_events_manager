@@ -23,6 +23,7 @@ class BggSqlMngrService {
     try {
       const response = await fetch(url);
       const text = await response.text();
+      console.log(text);
       const root = parse(text);
       const entries = root.querySelectorAll('div:has(> a.primary[href^="/boardgame/"])');
       for (const entry of entries) {
