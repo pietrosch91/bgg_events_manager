@@ -23,9 +23,8 @@ class BggSqlMngrService {
     try {
       const response = await fetch(url);
       const text = await response.text();
-      const dom = new JSDOM(text);
-      const doc = dom.window.document;
-      const entries = Array.from(doc.querySelectorAll('div:has(> a.primary[href^="/boardgame/"])'));
+      const root = parse(text);
+      const entries = root.querySelectorAll('div:has(> a.primary[href^="/boardgame/"])');
       for (const entry of entries) {
         const anchor = entry.querySelector('a.primary');
         const bggId = parseInt(anchor?.getAttribute('href')?.split('/')[2] || '0', 10);
