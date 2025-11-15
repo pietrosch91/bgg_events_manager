@@ -1,0 +1,20 @@
+
+@if(selector==select_val){
+  <div class="modal-overlay" (click)="$event.stopPropagation()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <table width="100%">
+        <tr>
+          <td>{{title_text}}</td>
+          <td><input type="text" #nome></td>
+        </tr>
+      </table>
+      <div display="flex">
+        <button type="button" (click)="evtConfirm.emit(nome.value)">Ok</button>
+        <a></a>
+        <button type="button" (click)="evtClose.emit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}
+
+

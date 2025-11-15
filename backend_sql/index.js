@@ -50,7 +50,8 @@ app.post('/select', (req, res) => {
 app.post('/search',async (req, res) => {
   console.log(req.body.title);
   const title  = req.body.title;
-  results=await BggSqlMngrService.searchTitle(title);
+  var results=await BggSqlMngrService.searchTitle(title);
+  console.log("Results =",results)
   if(results){
     res.status(200).json({result:results})
   }

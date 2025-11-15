@@ -23,7 +23,7 @@ class BggSqlMngrService {
     try {
       const response = await fetch(url);
       const text = await response.text();
-      console.log(text);
+      //console.log(text);
       const root = parse(text);
       const entries = root.querySelectorAll('div:has(> a.primary[href^="/boardgame/"])');
       for (const entry of entries) {
@@ -33,8 +33,10 @@ class BggSqlMngrService {
         const yearElement = entry.querySelector('span.smallerfont');
         const year = parseInt(yearElement?.textContent?.replace(/[()]/g, '') || '0', 10);
         results.push({ bgg_id: bggId, bgg_name: gameTitle, bgg_year: year });
+        console.log(results);
       }
     } catch (error) {
+      console.log(error);
       console.error(error);
       return null;
     }
