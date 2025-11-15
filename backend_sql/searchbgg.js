@@ -33,7 +33,6 @@ class BggSqlMngrService {
         const yearElement = entry.querySelector('span.smallerfont');
         const year = parseInt(yearElement?.textContent?.replace(/[()]/g, '') || '0', 10);
         results.push({ bgg_id: bggId, bgg_name: gameTitle, bgg_year: year });
-        console.log(results);
       }
     } catch (error) {
       console.log(error);

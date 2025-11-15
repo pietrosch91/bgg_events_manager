@@ -66,4 +66,3 @@ app.listen(PORT, () => {
 });
 
 
-await BggSqlMngrService.searchTitle("Quarto");
