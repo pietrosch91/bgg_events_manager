@@ -24,7 +24,7 @@ export class BarcodepanelComponent {
         data=>{
           if(data.length==0){
             console.log("No match found remotely either");
-            this.bggsql.searchTitle("Quarto").then(
+            this.bggsql.search_bgg_by_title("Quarto").then(
               searchdata => {console.log(searchdata)}
             );
             return;

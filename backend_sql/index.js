@@ -46,15 +46,17 @@ app.post('/select', (req, res) => {
   });
 });
 
-app.post('/search', (req, res) => {
+app.post('/search',async (req, res) => {
   console.log(req.body.title);
   const title  = req.body.title;
-  results=BggSqlMngrService.searchTitle(title).then((results)=>{
+  results=await BggSqlMngrService.searchTitle(title);
+  if(results){
     res.status(200).json({result:results})
-  }).catch((error)=>{
+  }
+  else{
     console.error('Error searching title:', error);
     res.status(500).send('Error searching title');
-  });
+  }
 });
 
 app.listen(PORT, () => {
