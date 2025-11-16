@@ -9,11 +9,12 @@
             @for(option of env.popups.options;track $index){
               <option value="{{option.val}}">{{option.opt}}</option>
             }
-          </select>/td>
+          </select>
+          </td>
         </tr>
       </table>
       <div display="flex">
-        <button type="button" (click)="values[0]=nome.selectedIndex;confirm()">Ok</button>
+        <button type="button" (click)="set(nome.value);confirm()">Ok</button>
         <a></a>
         <button type="button" (click)="cancel()">Cancel</button>
       </div>

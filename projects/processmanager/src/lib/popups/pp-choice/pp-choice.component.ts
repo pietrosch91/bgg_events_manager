@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PpbaseComponent } from '../ppbase/ppbase.component';
 import { PopupIdentifier, ProcessManagerService } from '../../process-manager.service';
 
+
 @Component({
   selector: 'lib-pp-choice',
   imports: [],
@@ -10,9 +11,13 @@ import { PopupIdentifier, ProcessManagerService } from '../../process-manager.se
 })
 export class PpChoiceComponent extends PpbaseComponent{
 
+    set(value: string){
+      this.values[0]=parseInt(value);
+    }
+
     constructor(override pm: ProcessManagerService) {
       super(pm);
       this.id=PopupIdentifier.CHOICE_INPUT;
-      this.values=[""];
+      this.values=[0];
     }
 }

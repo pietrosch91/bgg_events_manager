@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { LocalDb } from './dataclasses/bgg-local-db';
 
 
 
@@ -9,7 +10,6 @@ import { NgModule } from '@angular/core';
   imports: [
   ],
   exports: [
-
   ]
 })
 export class BggSqlMngrModule { }

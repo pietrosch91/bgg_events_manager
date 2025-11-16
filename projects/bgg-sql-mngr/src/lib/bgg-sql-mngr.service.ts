@@ -11,6 +11,10 @@ import { LocalDb } from './dataclasses/bgg-local-db';
 })
 export class BggSqlMngrService {
 
+  dump_local_db(): void {
+    console.log(LocalDb);
+  }
+
   private async postData(url: string, data: any): Promise<any> {
     const response = await fetch(url, {
       method: 'POST',
