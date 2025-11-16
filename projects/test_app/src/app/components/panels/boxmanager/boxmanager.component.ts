@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { bgg_search_status, BggSqlMngrService } from 'bgg-sql-mngr';
-import { knownGames,knownBarcodes,BggInfo } from 'bgg-sql-mngr';
-import { PpinputComponent } from '../../../../../../processmanager/src/lib/popups/ppinput/ppinput.component';
 import { ProcessManagerService, ProcessType } from 'processmanager';
 
 @Component({

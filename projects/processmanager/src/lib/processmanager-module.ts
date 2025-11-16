@@ -1,17 +1,21 @@
 import { NgModule } from '@angular/core';
-import { PpfakeinputComponent } from './popups/ppfakeinput/ppfakeinput.component';
+import { PpBarcodeComponent } from './popups/ppbarcode/ppbarcode.component';
 import { ProcessManagerComponent } from './process-manager/process-manager.component';
 import { A11yModule } from '@angular/cdk/a11y'
+import { PpinputComponent } from './popups/ppinput/ppinput.component';
+import { PpChoiceComponent } from "./popups/pp-choice/pp-choice.component";
 
 
 @NgModule({
   declarations: [
-    PpfakeinputComponent,
+    PpBarcodeComponent,
+    PpinputComponent,
     ProcessManagerComponent,
   ],
   imports: [
     A11yModule,
-  ],
+    PpChoiceComponent
+],
   exports: [
     ProcessManagerComponent,
   ]

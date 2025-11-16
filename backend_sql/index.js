@@ -47,6 +47,25 @@ app.post('/select', (req, res) => {
   });
 });
 
+
+app.post('/insert', (req, res) => {
+  console.log(req.body.query);
+  const query  = req.body.query;
+  console.log(query)
+  if (!query) {
+    return res.status(400).send('Query is required');
+  }
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error.stack);
+      return res.status(500).send('Error executing query');
+    }
+    console.log("Query executed successfully");
+    return res.status(200);
+  });
+});
+
+
 app.post('/search',async (req, res) => {
   console.log(req.body.title);
   const title  = req.body.title;

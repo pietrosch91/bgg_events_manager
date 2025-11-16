@@ -5,11 +5,15 @@
       <table width="100%">
         <tr>
           <td><b>{{env.popups.viewtext[0]}}</b></td>
-          <td><input type="text" #nome></td>
+          <td><select #nome>
+            @for(option of env.popups.options;track $index){
+              <option value="{{option.val}}">{{option.opt}}</option>
+            }
+          </select>/td>
         </tr>
       </table>
       <div display="flex">
-        <button type="button" (click)="values[0]=nome.value;confirm()">Ok</button>
+        <button type="button" (click)="values[0]=nome.selectedIndex;confirm()">Ok</button>
         <a></a>
         <button type="button" (click)="cancel()">Cancel</button>
       </div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PpfakeinputComponent } from './ppfakeinput.component';
+import { PpbaseComponent } from './ppbase.component';
 
-describe('PpfakeinputComponent', () => {
-  let component: PpfakeinputComponent;
-  let fixture: ComponentFixture<PpfakeinputComponent>;
+describe('PpbaseComponent', () => {
+  let component: PpbaseComponent;
+  let fixture: ComponentFixture<PpbaseComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PpfakeinputComponent]
+      imports: [PpbaseComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PpfakeinputComponent);
+    fixture = TestBed.createComponent(PpbaseComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

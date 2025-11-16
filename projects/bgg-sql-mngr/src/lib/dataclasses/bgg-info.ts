@@ -25,15 +25,5 @@ export class BggInfo {
     this.url = data.url;
     this.weight = data.weight;
     this.year = data.year;
-
-    knownGames.set(this.bgg_id!, this);
-
-    var barcode =data.barcode;
-    if(barcode){
-      knownBarcodes.set(barcode, this.bgg_id!);
-    }
   }
 }
-
-export const knownGames : Map<number, BggInfo> = new Map<number, BggInfo>();
-export const knownBarcodes : Map<string, number> = new Map<string, number>();

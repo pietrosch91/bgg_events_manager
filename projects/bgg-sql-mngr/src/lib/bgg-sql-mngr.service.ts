@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BggSearchResult } from './dataclasses/bgg-interfaces';
+import { LocalDb } from './dataclasses/bgg-local-db';
+
+
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +31,10 @@ export class BggSqlMngrService {
 
   async select(query: string): Promise<any[]> {
     return this.postData('http://192.168.1.7:7777/select', { query: query });
+  }
+
+  insert(query: string): void{
+    this.postData('http://192.168.1.7:7777/insert', { query: query });
   }
 
   async get_bgg_info_from_barcode(barcode: string): Promise<any[]> {
@@ -96,7 +105,28 @@ export class BggSqlMngrService {
 
   }*/
 
+  store_barcode(barcode: string, bgg_id: number,local_only:boolean=false): void {
+      LocalDb.BARCODES.set(barcode, bgg_id); //store locally
+      if(!local_only) this.insert("INSERT INTO BARCODES (barcode, bgg_id) VALUES ('" + barcode + "', " + bgg_id + ");");
+  }
 
+  async barcode_to_bggid(barcode: string): Promise<{lines:number,id:number|null,message:string}> {
+      //First check if barcode exists in LocalDb
+      var result=LocalDb.BARCODES.get(barcode);
+      if(result!==undefined){
+        return {lines: -1,id:result, message: "Found in local database"};
+      }
+      //Second: fetch from remote database
+      var data=await this.select("SELECT * FROM BARCODES WHERE barcode = '" + barcode + "';");
+      if(data.length>1){
+        return {lines:data.length,id:null, message: "Error: Multiple entries found for barcode"};
+      }
+      if(data.length==0){
+        return {lines:0,id:null, message: "No entry found for barcode"};
+      }
+      this.store_barcode(barcode, data[0].bgg_id,true); //store locally
+      return {lines:1,id:data[0].bgg_id, message: "Entry found in remote database"};
+  }
 
 
 }
