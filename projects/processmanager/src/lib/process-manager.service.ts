@@ -178,7 +178,8 @@ export class ProcessManagerService {
                 this.showPopup(PopupIdentifier.TEXT_INPUT,["Game Title :"],["search_title"],[],ProcessStep.SEARCH_BGG_BY_TITLE);
                 break;
               case ProcessStep.SEARCH_BGG_BY_TITLE:
-                var searchresults= await this.sql.search_bgg_by_title(data.get("search_title"));
+                var searchresults=(await this.sql.search_bgg_by_title(data.get("search_title"))).sdata;
+                console.log(typeof searchresults,searchresults);
                 if(searchresults.length==0){
                   this.abort("No results found for title search");
                   return;

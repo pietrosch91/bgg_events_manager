@@ -43,7 +43,7 @@ app.post('/select', (req, res) => {
     }
     console.log("Query executed successfully");
     console.log(results);
-    res.status(200).json(results);
+    res.status(200).json({sdata:results});
   });
 });
 

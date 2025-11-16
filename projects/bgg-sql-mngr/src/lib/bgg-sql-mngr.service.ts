@@ -29,7 +29,7 @@ export class BggSqlMngrService {
 
   }
 
-  async select(query: string): Promise<any[]> {
+  async select(query: string): Promise<{sdata:any[]}> {
     return this.postData('http://192.168.1.7:7777/select', { query: query });
   }
 
@@ -37,11 +37,11 @@ export class BggSqlMngrService {
     this.postData('http://192.168.1.7:7777/insert', { query: query });
   }
 
-  async get_bgg_info_from_barcode(barcode: string): Promise<any[]> {
+  async get_bgg_info_from_barcode(barcode: string): Promise<{sdata:any[]}> {
     return this.select("SELECT * FROM BARCODES AS c LEFT JOIN BGG AS b ON c.bgg_id = b.id WHERE c.barcode = '" + barcode + "';");
   }
 
-  async search_bgg_by_title(title: string): Promise<BggSearchResult[]> {
+  async search_bgg_by_title(title: string): Promise<{sdata:BggSearchResult[]}> {
     return this.postData("http://192.168.1.7:7777/search", { title: title });
   }
 
@@ -117,7 +117,7 @@ export class BggSqlMngrService {
         return {lines: -1,id:result, message: "Found in local database"};
       }
       //Second: fetch from remote database
-      var data=await this.select("SELECT * FROM BARCODES WHERE barcode = '" + barcode + "';");
+      var data=(await this.select("SELECT * FROM BARCODES WHERE barcode = '" + barcode + "';")).sdata;
       if(data.length>1){
         return {lines:data.length,id:null, message: "Error: Multiple entries found for barcode"};
       }
