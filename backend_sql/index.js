@@ -72,7 +72,7 @@ app.post('/search',async (req, res) => {
   var results=await BggSqlMngrService.searchTitle(title);
   console.log("Results =",results)
   if(results){
-    res.status(200).json({result:results})
+    res.status(200).json({sdata:results})
   }
   else{
     console.error('Error searching title:', error);
