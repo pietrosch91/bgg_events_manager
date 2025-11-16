@@ -1,32 +1,35 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BggSqlMngrModule, BggSqlMngrService } from 'bgg-sql-mngr';
-import { MainnavbarComponent } from "./components/mainnavbar/mainnavbar.component";
-import { PpbarcodeComponent } from './components/popups/ppbarcode/ppbarcode.component';
+//externals
 import { A11yModule } from '@angular/cdk/a11y'
-import { PpinputComponent } from './components/popups/ppinput/ppinput.component';
+//internal MODULE
+import { AppRoutingModule } from './app-routing.module';
+
+import { AppComponent } from './app.component';
+
+
+import { MainnavbarComponent } from "./components/mainnavbar/mainnavbar.component";
+
 import { BoxmanagerComponent } from './components/panels/boxmanager/boxmanager.component';
-import { PpfakeinputComponent } from './components/popups/ppfakeinput/ppfakeinput.component';
+
+//internal OTHER MODULES
+import { ProcessmanagerModule,ProcessManagerService } from 'processmanager';
+import { BggSqlMngrModule, BggSqlMngrService } from 'bgg-sql-mngr';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PpbarcodeComponent,
-    PpinputComponent,
-    PpfakeinputComponent,
     BoxmanagerComponent
   ],
   imports: [
     BggSqlMngrModule,
+    ProcessmanagerModule,
     BrowserModule,
     AppRoutingModule,
     MainnavbarComponent,
     A11yModule
 ],
-  providers: [BggSqlMngrService],
+  providers: [BggSqlMngrService,ProcessManagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

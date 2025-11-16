@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PpbarcodeComponent } from './ppbarcode.component';
+import { ProcessManagerComponent } from './process-manager.component';
 
-describe('PpbarcodeComponent', () => {
-  let component: PpbarcodeComponent;
-  let fixture: ComponentFixture<PpbarcodeComponent>;
+describe('ProcessManagerComponent', () => {
+  let component: ProcessManagerComponent;
+  let fixture: ComponentFixture<ProcessManagerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PpbarcodeComponent]
+      imports: [ProcessManagerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PpbarcodeComponent);
+    fixture = TestBed.createComponent(ProcessManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

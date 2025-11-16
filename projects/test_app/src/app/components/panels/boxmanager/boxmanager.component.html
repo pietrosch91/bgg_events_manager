@@ -1,15 +1,1 @@
-<!--popups -->
-<app-ppfakeinput
-  [select_val]=1
-  [selector]=popup_select
-  (evtConfirm)="find_bgg_id_from_barcode($event);"
-></app-ppfakeinput>
-<app-ppinput
-  [select_val]=1
-  [selector]=popup_select
-  title_text="Game Title"
-  (evtClose)="popup_select=0"
-  (evtConfirm)="popup_select=0;search_bgg_by_title($event);"
-></app-ppinput>
-
-
+<button (click)="start_create()">Create New Box</button>

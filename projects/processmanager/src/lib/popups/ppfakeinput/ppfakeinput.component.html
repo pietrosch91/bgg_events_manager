@@ -1,0 +1,18 @@
+@if(env.visible_popup == id){
+  <div class="modal-overlay" (click)="$event.stopPropagation()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div>Scan the Barcode</div>
+      @if(env.hidden_input_active){
+        <div><input class="cdk-visually-hidden" [cdkTrapFocusAutoCapture]="env.hidden_input_active" [cdkTrapFocus]="env.hidden_input_active" type="text" #nome
+          (keypress)="onKeyPressed($event)"
+          (input)="onInputChange(nome.value)"
+          (blur)="onBlur($event)"></div>
+      }
+      <div display="flex">
+        <button type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}
+
+

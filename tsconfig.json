@@ -3,14 +3,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "paths": {
-      "BggRemoteSqlManager": [
-        "./dist/bgg-remote-sql-manager"
-      ],
-      "bgg-sql-mngr": [
-        "./dist/bgg-sql-mngr"
-      ]
-    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -20,11 +12,25 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": false,
     "experimentalDecorators": true,
+    "paths": {
+      "bgg-sql-mngr": [
+        "./dist/bgg-sql-mngr"
+      ],
+      "processmanager": [
+        "./dist/processmanager"
+      ],
+    },
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+    "lib": [
+      "ES2022",
+      "dom"
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
