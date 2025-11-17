@@ -36,7 +36,7 @@ class BggScraper{
         }
       }
 
-      console.log(GEEKString);
+      //console.log(GEEKString);
 
       const lines = GEEKString.split("\n");
       for (const line of lines) {
@@ -45,7 +45,14 @@ class BggScraper{
           break;
         }
       }
-      console.log(GEEKString);
+      //console.log(GEEKString);
+
+      // Extract the JSON-like part
+      const startIndex = GEEKString.indexOf("{");
+      const endIndex = GEEKString.lastIndexOf("}");
+      GEEKString = GEEKString.substring(startIndex, endIndex + 1);
+      GEEKData=JSON.parse(GEEKString);
+      console.log(GEEKData);
 
       const keys = ["minplayers", "maxplayers", "minplaytime", "maxplaytime", "minage", "avgweight", "yearpublished"];
       const values = {};
