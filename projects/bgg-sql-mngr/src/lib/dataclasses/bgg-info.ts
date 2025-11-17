@@ -26,4 +26,10 @@ export class BggInfo {
     this.weight = data.weight;
     this.year = data.year;
   }
+
+  insertQuery():string{
+    return `INSERT INTO BGG (id, title_en, title_show, year, pl_min, pl_max, len_min, len_max, weight, age_min, url, cover) VALUES (${this.bgg_id}, '${this.title_en}', '${this.title_show}', ${this.year}, ${this.pl_min}, ${this.pl_max}, ${this.len_min}, ${this.len_max}, ${this.weight}, ${this.age_min}, '${this.url}', '${this.cover}');`;
+  }
+
+
 }

@@ -79,27 +79,27 @@ export class BggSqlMngrService {
       return {lines:1,id:data[0].bgg_id, message: "Entry found in remote database",source:SourceID.REMOTE_DB};
   }
 
-  async bggid_to_info(bgg_id:number): Promise<{info:BggInfo|null,message:string,sorce:SourceID}> {
+  async bggid_to_info(bgg_id:number): Promise<{info:BggInfo|null,message:string,source:SourceID}> {
     //First check if bgginfo  exists in LocalDb
     var result=LocalDb.BGG.get(bgg_id);
     if(result!==undefined){
-      return {info:result, message: "Found in local database",sorce:SourceID.LOCAL_DB};
+      return {info:result, message: "Found in local database",source:SourceID.LOCAL_DB};
     }
     //Second: fetch from remote database
     var data=(await this.select("SELECT * FROM BGG WHERE id = '" + bgg_id + "';")).sdata;
     if(data.length>1){
-      return {info:null, message: "Error: Multiple entries found for barcode",sorce:SourceID.REMOTE_DB};
+      return {info:null, message: "Error: Multiple entries found for barcode",source:SourceID.REMOTE_DB};
     }
     else if(data.length==1){
       var bgginfo=new BggInfo(data[0]);
       LocalDb.BGG.set(bgg_id,bgginfo); //store locally
-      return {info:bgginfo,message:"Entry found in remote database",sorce:SourceID.REMOTE_DB};
+      return {info:bgginfo,message:"Entry found in remote database",source:SourceID.REMOTE_DB};
     }
     else{
       var search_result=(await this.postData("http://192.168.1.7:7777/scrape", { ID: bgg_id })).sdata;
       var bgginfo=new BggInfo(search_result);
       LocalDb.BGG.set(bgg_id,bgginfo); //store locally
-      return {info:bgginfo,message:"Entry scraped from BGG website",sorce:SourceID.EXT_API};
+      return {info:bgginfo,message:"Entry scraped from BGG website",source:SourceID.EXT_API};
     }
 }
 

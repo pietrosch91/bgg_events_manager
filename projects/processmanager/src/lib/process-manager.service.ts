@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BggSqlMngrService } from 'bgg-sql-mngr';
+import { BggSqlMngrService, SourceID } from 'bgg-sql-mngr';
 
 export enum ProcessType {
   NONE = 0,
@@ -20,7 +20,8 @@ export enum ProcessStep {
   SEARCH_BGG_BY_TITLE = 5,
   CONFIRM_BGG_SELECTION = 6,
   GET_BGGINFO = 7,
-  CHECK_EXTRA_TITLE = 8,
+  END_PROCESS = -99,
+
 }
 
 export function getProcessStepName(step: ProcessStep): string {
@@ -105,6 +106,13 @@ export class ProcessManagerService {
     ProcessEnv.ProcessData.set(key, value);
   }
 
+  recoverData(key:string): any | null{
+    if(ProcessEnv.ProcessData.has(key)){
+      return ProcessEnv.ProcessData.get(key);
+    }
+    return null;
+  }
+
   setNextStep(step:ProcessStep):void{
     ProcessEnv.step = step;
   }
@@ -131,7 +139,7 @@ export class ProcessManagerService {
       go_again=false;
       var type:ProcessType = ProcessEnv.process;
       var step:ProcessStep = ProcessEnv.step;
-      var data:Map<string, any> = ProcessEnv.ProcessData;
+     // var data:Map<string, any> = ProcessEnv.ProcessData;
       if(step==ProcessStep.PROCESS_START){
         console.log("/*************/");
         console.log("STARTING PROCESS :",getProcessTypeName(type));
@@ -145,7 +153,7 @@ export class ProcessManagerService {
         return;
       }
       else if(step==ProcessStep.ABORTED_PROCESS){
-        console.log("ProcessManagerService.nextStep: Process Aborted due to", data.get("message"));
+        console.log("ProcessManagerService.nextStep: Process Aborted due to", this.recoverData("message"));
         return;
       }
       else{
@@ -163,13 +171,13 @@ export class ProcessManagerService {
                 break;
               }
               case ProcessStep.GET_BGGID:{
-                let sqldata= await this.sql.barcode_to_bggid(data.get("barcode"));
+                let sqldata= await this.sql.barcode_to_bggid(this.recoverData("barcode"));
                 if(sqldata.lines==0){
                   ProcessEnv.step = ProcessStep.ASK_TITLE;
                   go_again=true;
                 }
                 else if(sqldata.lines==1){
-                  data.set("bgg_id", sqldata.id);
+                  this.storeData("bgg_id", sqldata.id);
                   ProcessEnv.step = ProcessStep.GET_BGGINFO;
                   go_again=true;
                 }
@@ -184,15 +192,16 @@ export class ProcessManagerService {
                 break;
               }
               case ProcessStep.SEARCH_BGG_BY_TITLE:{
-                var searchresults=(await this.sql.search_bgg_by_title(data.get("search_title"))).sdata;
+                var searchresults=(await this.sql.search_bgg_by_title(this.recoverData("search_title"))).sdata;
                 console.log(typeof searchresults,searchresults);
                 if(searchresults.length==0){
                   this.abort("No results found for title search");
                   return;
                 }
                 else if (searchresults.length==1){
-                  data.set("bgg_id", searchresults[0].bgg_id);
-                  this.sql.store_barcode(data.get("barcode"), searchresults[0].bgg_id);
+                  this.storeData("bgg_id", searchresults[0].bgg_id);
+                  this.storeData("bgg_id_source", SourceID.EXT_API);
+                  this.sql.store_barcode(this.recoverData("barcode"), this.recoverData("bgg_id"),false);
                   ProcessEnv.step = ProcessStep.GET_BGGINFO;
                   //Store both locally and remote
                   go_again=true;
@@ -204,22 +213,41 @@ export class ProcessManagerService {
                 break;
               }
               case ProcessStep.CONFIRM_BGG_SELECTION:{
-                this.sql.store_barcode(data.get("barcode"), data.get("bgg_id"));
+                this.storeData("bgg_id_source", SourceID.EXT_API);
+                this.sql.store_barcode(this.recoverData("barcode"), this.recoverData("bgg_id"),false);
                 ProcessEnv.step = ProcessStep.GET_BGGINFO;
                 go_again=true;
                 break;
               }
               case ProcessStep.GET_BGGINFO:{
-                let sqldata= await this.sql.bggid_to_info(data.get("bgg_id"));
+                let sqldata= await this.sql.bggid_to_info(this.recoverData("bgg_id"));
                 if(sqldata.info!==null){
                   this.storeData("bgginfo", sqldata.info);
-                  ProcessEnv.step = ProcessStep.CHECK_EXTRA_TITLE;
-                  go_again=true;
+                  this.storeData("bgginfo_source", sqldata.source);
+                  if(sqldata.info.title_show == undefined){
+                    this.showPopup(PopupIdentifier.TEXT_INPUT,["Insert Title to Show :"],["title_show"],[],ProcessStep.END_PROCESS);
+                  }
+                  else{
+                    ProcessEnv.step = ProcessStep.END_PROCESS;
+                    go_again=true;
+                  }
                 }
                 else{
-                  this.abort("Failed to retrieve BGG info for BGG ID " + data.get("bgg_id"));
+                  this.abort("Failed to retrieve BGG info for BGG ID " + this.recoverData("bgg_id"));
                   return;
                 }
+                break;
+              }
+              case ProcessStep.END_PROCESS:{
+                let bgginfo= this.recoverData("bgginfo");
+                if(bgginfo.title_show == undefined){
+                    bgginfo.title_show = this.recoverData("title_show");
+                }
+                if(this.recoverData("bgg_info_source") == SourceID.EXT_API){
+                  this.sql.insert(bgginfo.insertQuery());
+                }
+                console.log("ProcessManagerService.nextStep: Process ",getProcessTypeName(type)," completed successfully");
+                ProcessEnv.step = ProcessStep.NONE;
                 break;
               }
               default:

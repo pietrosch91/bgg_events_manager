@@ -14,7 +14,6 @@ class BggScraper{
       year: 0,
       url: "",
       title_en: "",
-      title_show:"",
       cover: ""
     };
 
