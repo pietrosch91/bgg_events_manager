@@ -14,7 +14,7 @@ export class BggInfo {
 
   constructor(data:any){
     this.age_min = data.age_min;
-    this.bgg_id = data.bgg_id;
+    this.bgg_id = data.id;
     this.cover = data.cover;
     this.len_max = data.len_max;
     this.len_min = data.len_min;
