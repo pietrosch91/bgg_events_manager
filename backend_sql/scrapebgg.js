@@ -62,7 +62,7 @@ class BggScraper{
       result.weight = GEEKData.item.stats.avgweight || 0;
       result.year = GEEKData.item.yearpublished || 0;
       result.title_en = GEEKData.item.name || null;
-      result.cover = GEEKData.images.original || null;
+      result.cover = GEEKData.item.images.original || null;
     } catch (error) {
       console.error("Error fetching or parsing data:", error);
       return null;
