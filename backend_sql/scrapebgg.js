@@ -51,38 +51,18 @@ class BggScraper{
       const startIndex = GEEKString.indexOf("{");
       const endIndex = GEEKString.lastIndexOf("}");
       GEEKString = GEEKString.substring(startIndex, endIndex + 1);
-      GEEKData=JSON.parse(GEEKString);
+      let GEEKData=JSON.parse(GEEKString);
       console.log(GEEKData);
 
-      const keys = ["minplayers", "maxplayers", "minplaytime", "maxplaytime", "minage", "avgweight", "yearpublished"];
-      const values = {};
-
-      keys.forEach((key) => {
-        const regex = new RegExp(`"${key}":(\\d+(\\.\\d+)?)`, "i");
-        const match = GEEKString.match(regex);
-        if (match) {
-          values[key] = parseFloat(match[1]);
-        }
-      });
-
-      result.pl_min = values.minplayers || 0;
-      result.pl_max = values.maxplayers || 0;
-      result.len_min = values.minplaytime || 0;
-      result.len_max = values.maxplaytime || 0;
-      result.age_min = values.minage || 0;
-      result.weight = values.avgweight || 0;
-      result.year = values.yearpublished || 0;
-
-
-      const titleElement = root.querySelector("meta[name=title]");
-      if (titleElement) {
-        result.title_en = titleElement.getAttribute("content");
-      }
-
-      const coverElement = root.querySelector("link[rel=preload]:not([media])");
-      if (coverElement) {
-        result.cover = coverElement.getAttribute("href");
-      }
+      result.pl_min = GEEKData.item.minplayers || 0;
+      result.pl_max = GEEKData.item.maxplayers || 0;
+      result.len_min = GEEKData.item.minplaytime || 0;
+      result.len_max = GEEKData.item.maxplaytime || 0;
+      result.age_min = GEEKData.item.minage || 0;
+      result.weight = GEEKData.item.stats.avgweight || 0;
+      result.year = GEEKData.item.yearpublished || 0;
+      result.title_en = GEEKData.item.name || null;
+      result.cover = GEEKData.images.original || null;
     } catch (error) {
       console.error("Error fetching or parsing data:", error);
       return null;
