@@ -85,7 +85,7 @@ app.post('/search',async (req, res) => {
 app.post('/scrape',async (req, res) => {
   console.log(req.body.ID);
   const ID  = req.body.ID;
-  var results=await BggScraper.searchID(title);
+  var results=await BggScraper.searchID(ID);
   console.log("Results =",results)
   if(results){
     res.status(200).json({sdata:results})
