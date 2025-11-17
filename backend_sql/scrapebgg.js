@@ -26,34 +26,43 @@ class BggScraper{
       const html = await response.text();
       const root = parse(html);
 
-      const scriptElements = root.querySelectorAll("script");
-      let geekString = "";
+      const scripts = root.querySelectorAll("script");
+      let GEEKString = "";
 
-      for (const script of scriptElements) {
+      for (const script of scripts) {
         if (script.innerHTML.includes("GEEK.geekitemPreload")) {
-          geekString = script.innerHTML;
+          GEEKString = script.innerHTML;
+          break;
+        }
+      }
+
+      const lines = GEEKString.split("\n");
+      for (const line of lines) {
+        if (line.includes("GEEK.geekitemPreload")) {
+          GEEKString = line;
           break;
         }
       }
 
       const keys = ["minplayers", "maxplayers", "minplaytime", "maxplaytime", "minage", "avgweight", "yearpublished"];
-      const values = { minplayers: 0, maxplayers: 0, minplaytime: 0, maxplaytime: 0, minage: 0, avgweight: 0, yearpublished: 0 };
+      const values = {};
 
-      const regex = new RegExp(`"(${keys.join('|')})":(\\d+(\\.\\d+)?)`, 'g');
-      let match;
-      while ((match = regex.exec(geekString)) !== null) {
-        const key = match[1]; // Correctly extract the key from the first capturing group
-        const value = parseFloat(match[2]); // Extract the value from the second capturing group
-        values[key] = value;
-      }
+      keys.forEach((key) => {
+        const regex = new RegExp(`"${key}":(\\d+(\\.\\d+)?)`, "i");
+        const match = GEEKString.match(regex);
+        if (match) {
+          values[key] = parseFloat(match[1]);
+        }
+      });
 
-      result.pl_min = values.minplayers;
-      result.pl_max = values.maxplayers;
-      result.len_min = values.minplaytime;
-      result.len_max = values.maxplaytime;
-      result.age_min = values.minage;
-      result.weight = values.avgweight;
-      result.year = values.yearpublished;
+      result.pl_min = values.minplayers || 0;
+      result.pl_max = values.maxplayers || 0;
+      result.len_min = values.minplaytime || 0;
+      result.len_max = values.maxplaytime || 0;
+      result.age_min = values.minage || 0;
+      result.weight = values.avgweight || 0;
+      result.year = values.yearpublished || 0;
+
 
       const titleElement = root.querySelector("meta[name=title]");
       if (titleElement) {
