@@ -52,7 +52,7 @@ class BggScraper{
       const endIndex = GEEKString.lastIndexOf("}");
       GEEKString = GEEKString.substring(startIndex, endIndex + 1);
       let GEEKData=JSON.parse(GEEKString);
-      console.log(GEEKData);
+      console.log(GEEKData.item);
 
       result.pl_min = GEEKData.item.minplayers || 0;
       result.pl_max = GEEKData.item.maxplayers || 0;
