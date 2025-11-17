@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BggSearchResult } from './dataclasses/bgg-interfaces';
 import { LocalDb } from './dataclasses/bgg-local-db';
+import { BggInfo } from './dataclasses/bgg-info';
 
 
-
+export enum SourceID {
+  LOCAL_DB = 0,
+  REMOTE_DB = 1,
+  EXT_API = 2,
+}
 
 
 @Injectable({
@@ -49,88 +54,54 @@ export class BggSqlMngrService {
     return this.postData("http://192.168.1.7:7777/search", { title: title });
   }
 
-/*
-  public static BggGameInfo search_ID(int ID){
-      BggGameInfo result= new BggGameInfo();
-      result.BGG_ID=ID;
-      String URL="https://boardgamegeek.com/boardgame/"+ID;
-      double[] values={0,0,0,0,0,0,0};
-      try{
-          Document d=Jsoup.connect(URL).get();
-          System.out.println(d.toString());
-          ArrayList<Element> scripts =Selector.select("script",d);
-          Element GEEKScript=null;
-          String GEEKString="";
-          for(int i=0;i<scripts.size();i++){
-              if(scripts.get(i).html().contains("GEEK.geekitemPreload")){
-                  GEEKScript=scripts.get(i);
-                  break;
-              }
-          }
-          String[] lines=GEEKScript.html().split("\n");
-          for(int i=0;i<lines.length;i++){
-              if(lines[i].contains("GEEK.geekitemPreload")){
-                  GEEKString=lines[i];
-                  break;
-              }
-          }
-          StringTokenizer st=new StringTokenizer(GEEKString,"\"");
-          String[] keys={"minplayers","maxplayers","minplaytime","maxplaytime","minage","avgweight","yearpublished"};
-          while(st.hasMoreTokens()){
-              String tok=st.nextToken();
-              System.out.println(tok);
-              for(int i=0;i<keys.length;i++){
-                  if(!tok.equals(keys[i]))  continue;
-                  st.nextToken();
-                  try{
-                      double x=Double.parseDouble(st.nextToken());
-                      values[i]=x;
-                  }catch(NumberFormatException e){}
-              }
-          }
 
-          result.BGG_min_players=(int)values[0];
-          result.BGG_max_players=(int)values[1];
-          result.BGG_min_len=(int)values[2];
-          result.BGG_max_len=(int)values[3];
-          result.BGG_min_age=(int)values[4];
-          result.BGG_weight=values[5];
-          result.BGG_yr=(int)values[6];
-          result.BGG_URL=URL;
-
-          Element title=Selector.select("meta[name=title]",d).first();
-          result.BGG_Title=title.attr("content");
-
-          Element cover=Selector.select("link[rel=preload]:not([media])",d).first();
-          result.BGG_Cover=cover.attr("href");
-      }catch(IOException e){}
-
-      return result;
-
-  }*/
 
   store_barcode(barcode: string, bgg_id: number,local_only:boolean=false): void {
       LocalDb.BARCODES.set(barcode, bgg_id); //store locally
       if(!local_only) this.insert("INSERT INTO BARCODES (barcode, bgg_id) VALUES ('" + barcode + "', " + bgg_id + ");");
   }
 
-  async barcode_to_bggid(barcode: string): Promise<{lines:number,id:number|null,message:string}> {
+  async barcode_to_bggid(barcode: string): Promise<{lines:number,id:number|null,message:string,source:SourceID}> {
       //First check if barcode exists in LocalDb
       var result=LocalDb.BARCODES.get(barcode);
       if(result!==undefined){
-        return {lines: -1,id:result, message: "Found in local database"};
+        return {lines: 1,id:result, message: "Found in local database",source:SourceID.LOCAL_DB};
       }
       //Second: fetch from remote database
       var data=(await this.select("SELECT * FROM BARCODES WHERE barcode = '" + barcode + "';")).sdata;
       if(data.length>1){
-        return {lines:data.length,id:null, message: "Error: Multiple entries found for barcode"};
+        return {lines:data.length,id:null, message: "Error: Multiple entries found for barcode",source:SourceID.REMOTE_DB};
       }
       if(data.length==0){
-        return {lines:0,id:null, message: "No entry found for barcode"};
+        return {lines:0,id:null, message: "No entry found for barcode",source:SourceID.REMOTE_DB};
       }
       this.store_barcode(barcode, data[0].bgg_id,true); //store locally
-      return {lines:1,id:data[0].bgg_id, message: "Entry found in remote database"};
+      return {lines:1,id:data[0].bgg_id, message: "Entry found in remote database",source:SourceID.REMOTE_DB};
   }
+
+  async bggid_to_info(bgg_id:number): Promise<{info:BggInfo|null,message:string,sorce:SourceID}> {
+    //First check if bgginfo  exists in LocalDb
+    var result=LocalDb.BGG.get(bgg_id);
+    if(result!==undefined){
+      return {info:result, message: "Found in local database",sorce:SourceID.LOCAL_DB};
+    }
+    //Second: fetch from remote database
+    var data=(await this.select("SELECT * FROM BGG WHERE id = '" + bgg_id + "';")).sdata;
+    if(data.length>1){
+      return {info:null, message: "Error: Multiple entries found for barcode",sorce:SourceID.REMOTE_DB};
+    }
+    else if(data.length==1){
+      var bgginfo=new BggInfo(data[0]);
+      LocalDb.BGG.set(bgg_id,bgginfo); //store locally
+      return {info:bgginfo,message:"Entry found in remote database",sorce:SourceID.REMOTE_DB};
+    }
+    else{
+      var search_result=(await this.postData("http://192.168.1.7:7777/scrape", { id: bgg_id })).sdata;
+      var bgginfo=new BggInfo(data);
+      LocalDb.BGG.set(bgg_id,bgginfo); //store locally
+      return {info:bgginfo,message:"Entry scraped from BGG website",sorce:SourceID.EXT_API};
+    }
+}
 
 
 }

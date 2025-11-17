@@ -19,8 +19,10 @@ export enum ProcessStep {
   ASK_TITLE = 4,
   SEARCH_BGG_BY_TITLE = 5,
   CONFIRM_BGG_SELECTION = 6,
-  GET_BGGINFO = 7
+  GET_BGGINFO = 7,
+  CHECK_EXTRA_TITLE = 8,
 }
+
 export function getProcessStepName(step: ProcessStep): string {
   return ProcessStep[step] || "UNKNOWN_STEP";
 }
@@ -150,16 +152,18 @@ export class ProcessManagerService {
         switch(type){
           case ProcessType.BOX_CREATION:
             switch(step){
-              case ProcessStep.PROCESS_START: //OK
+              case ProcessStep.PROCESS_START:{ //OK
                 ProcessEnv.step = ProcessStep.GET_BARCODE;
                 go_again=true;
                 break;
-              case ProcessStep.GET_BARCODE://OK
+              }
+              case ProcessStep.GET_BARCODE:{ //OK
                 //proceed to receive barcode
                 this.showPopup(PopupIdentifier.BARCODE_INPUT,[],["barcode"],[],ProcessStep.GET_BGGID);
                 break;
-              case ProcessStep.GET_BGGID:
-                var sqldata= await this.sql.barcode_to_bggid(data.get("barcode"));
+              }
+              case ProcessStep.GET_BGGID:{
+                let sqldata= await this.sql.barcode_to_bggid(data.get("barcode"));
                 if(sqldata.lines==0){
                   ProcessEnv.step = ProcessStep.ASK_TITLE;
                   go_again=true;
@@ -174,10 +178,12 @@ export class ProcessManagerService {
                   return;
                 }
                 break;
-              case ProcessStep.ASK_TITLE:
+              }
+              case ProcessStep.ASK_TITLE:{
                 this.showPopup(PopupIdentifier.TEXT_INPUT,["Game Title :"],["search_title"],[],ProcessStep.SEARCH_BGG_BY_TITLE);
                 break;
-              case ProcessStep.SEARCH_BGG_BY_TITLE:
+              }
+              case ProcessStep.SEARCH_BGG_BY_TITLE:{
                 var searchresults=(await this.sql.search_bgg_by_title(data.get("search_title"))).sdata;
                 console.log(typeof searchresults,searchresults);
                 if(searchresults.length==0){
@@ -196,11 +202,26 @@ export class ProcessManagerService {
                   this.showPopup(PopupIdentifier.CHOICE_INPUT,["Select the correct game :"],["bgg_id"],options,ProcessStep.CONFIRM_BGG_SELECTION);
                 }
                 break;
-              case ProcessStep.CONFIRM_BGG_SELECTION:
+              }
+              case ProcessStep.CONFIRM_BGG_SELECTION:{
                 this.sql.store_barcode(data.get("barcode"), data.get("bgg_id"));
                 ProcessEnv.step = ProcessStep.GET_BGGINFO;
                 go_again=true;
                 break;
+              }
+              case ProcessStep.GET_BGGINFO:{
+                let sqldata= await this.sql.bggid_to_info(data.get("bgg_id"));
+                if(sqldata.info!==null){
+                  this.storeData("bgginfo", sqldata.info);
+                  ProcessEnv.step = ProcessStep.CHECK_EXTRA_TITLE;
+                  go_again=true;
+                }
+                else{
+                  this.abort("Failed to retrieve BGG info for BGG ID " + data.get("bgg_id"));
+                  return;
+                }
+                break;
+              }
               default:
                 console.log("ProcessManagerService.nextStep: Reached unknown state :",getProcessTypeName(type),":",getProcessStepName(step));
                 console.log(ProcessEnv);

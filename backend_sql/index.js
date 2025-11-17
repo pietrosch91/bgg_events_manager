@@ -3,6 +3,8 @@ import mysql from 'mysql2';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import BggSqlMngrService from './searchbgg.js';
+import BggScraper from './scrapebgg.js';
+import BggSearcher from './searchbgg.js';
 
 const app = express();
 const PORT = 7777;
@@ -69,7 +71,21 @@ app.post('/insert', (req, res) => {
 app.post('/search',async (req, res) => {
   console.log(req.body.title);
   const title  = req.body.title;
-  var results=await BggSqlMngrService.searchTitle(title);
+  var results=await BggSearcher.searchTitle(title);
+  console.log("Results =",results)
+  if(results){
+    res.status(200).json({sdata:results})
+  }
+  else{
+    console.error('Error searching title:', error);
+    res.status(500).send('Error searching title');
+  }
+});
+
+app.post('/scrape',async (req, res) => {
+  console.log(req.body.ID);
+  const ID  = req.body.ID;
+  var results=await BggScraper.searchID(title);
   console.log("Results =",results)
   if(results){
     res.status(200).json({sdata:results})
