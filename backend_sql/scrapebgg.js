@@ -36,6 +36,8 @@ class BggScraper{
         }
       }
 
+      console.log(GEEKString);
+
       const lines = GEEKString.split("\n");
       for (const line of lines) {
         if (line.includes("GEEK.geekitemPreload")) {
@@ -43,6 +45,7 @@ class BggScraper{
           break;
         }
       }
+      console.log(GEEKString);
 
       const keys = ["minplayers", "maxplayers", "minplaytime", "maxplaytime", "minage", "avgweight", "yearpublished"];
       const values = {};
