@@ -96,8 +96,8 @@ export class BggSqlMngrService {
       return {info:bgginfo,message:"Entry found in remote database",sorce:SourceID.REMOTE_DB};
     }
     else{
-      var search_result=(await this.postData("http://192.168.1.7:7777/scrape", { id: bgg_id })).sdata;
-      var bgginfo=new BggInfo(data);
+      var search_result=(await this.postData("http://192.168.1.7:7777/scrape", { ID: bgg_id })).sdata;
+      var bgginfo=new BggInfo(search_result);
       LocalDb.BGG.set(bgg_id,bgginfo); //store locally
       return {info:bgginfo,message:"Entry scraped from BGG website",sorce:SourceID.EXT_API};
     }
