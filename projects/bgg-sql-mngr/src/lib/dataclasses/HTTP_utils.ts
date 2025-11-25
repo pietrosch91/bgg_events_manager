@@ -22,7 +22,7 @@ export class httpUtils{
     return this.postData('http://192.168.1.7:7777/select', { query: query });
   }
 
-  async insert(query: string): Promise<string>{
+  async insert(query: string): Promise<{sdata:string}>{
     return this.postData('http://192.168.1.7:7777/insert', { query: query });
   }
 
