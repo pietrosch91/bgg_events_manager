@@ -1,0 +1,30 @@
+@switch (type) {
+  @case (AutoInputType.BARCODE){
+    @if(env.process==ProcessType.NONE){
+      <div><input autofocus class="cdk-visually-hidden" [cdkTrapFocusAutoCapture]="focus" [cdkTrapFocus]="focus" type="text" #nome
+        (keypress)="BARCODE_key_pressed($event)"
+        (input)="BARCODE_input_change(nome.value)"
+        (blur)="re_focus()"></div>
+    }
+  }
+  @case (AutoInputType.OWNER){
+    <div style="display:flex">
+      <div>Owner</div>
+      <select #nome (change)="DEFAULT_input_change(nome.value)">
+        @for(option of options;track $index){
+          <option [value]="option.label" (selected)="$index==0">{{option.label}}</option>
+        }
+      </select>
+    </div>
+  }
+  @case (AutoInputType.PROCESS){
+    <div style="display:flex">
+      <div>Process</div>
+      <select #nome (change)="PROCESS_input_change(nome.value)">
+        @for(option of options;track $index){
+          <option [value]="option" (selected)="$index==0">{{option}}</option>
+        }
+      </select>
+    </div>
+  }
+}

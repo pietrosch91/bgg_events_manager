@@ -16,12 +16,12 @@ export class PpbaseComponent {
 
   constructor (protected pm:ProcessManagerService){}
 
-  confirm(){
+  confirm(state_index:number =0){
     for(let i=0;i<this.values.length;i++){
       this.pm.storeData(this.env.popups.varnames[i], this.values[i]);
       this.values[i]="";
     }
-    this.pm.setNextStep(this.env.popups.step_success);
+    this.pm.setNextStep(this.env.popups.steps[state_index]);
     this.pm.hidePopup();
     this.pm.nextStep();
   }

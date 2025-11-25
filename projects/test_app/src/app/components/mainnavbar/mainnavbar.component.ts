@@ -10,8 +10,8 @@ export class MainnavbarComponent {
 
   selected_menu:string = "";
 
-  list_of_menus:string[] = ["home","search","collections","stats","forums","about","btc"];
-  list_of_menu_names:string[] = ["Home","Search","Collections","Stats","Forums","About","Barcode Table Checker"];
+  list_of_menus:string[] = ["btc","grp"];
+  list_of_menu_names:string[] = ["Barcode Table Checker","Group Management"];
 
   get_class(classes:string,target:string) : string{
     if(this.selected_menu == target){

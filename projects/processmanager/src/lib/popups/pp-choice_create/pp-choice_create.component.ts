@@ -4,12 +4,12 @@ import { PopupIdentifier, ProcessManagerService } from '../../process-manager.se
 
 
 @Component({
-  selector: 'lib-pp-choice',
+  selector: 'lib-pp-choice-create',
   standalone: false,
-  templateUrl: './pp-choice.component.html',
-  styleUrl: './pp-choice.component.css',
+  templateUrl: './pp-choice_create.component.html',
+  styleUrl: './pp-choice_create.component.css',
 })
-export class PpChoiceComponent extends PpbaseComponent{
+export class PpChoiceCreateComponent extends PpbaseComponent{
 
     set(value: number){
       this.values[0]=this.env.popups.options[value].val;
@@ -17,7 +17,7 @@ export class PpChoiceComponent extends PpbaseComponent{
 
     constructor(override pm: ProcessManagerService) {
       super(pm);
-      this.id=PopupIdentifier.CHOICE_INPUT;
+      this.id=PopupIdentifier.CHOICE_CREATE_INPUT;
       this.values=[0];
     }
 }

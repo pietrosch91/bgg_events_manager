@@ -15,11 +15,15 @@ import { BoxmanagerComponent } from './components/panels/boxmanager/boxmanager.c
 //internal OTHER MODULES
 import { ProcessmanagerModule,ProcessManagerService } from 'processmanager';
 import { BggSqlMngrModule, BggSqlMngrService } from 'bgg-sql-mngr';
+import { BoxviewGroupComponent } from './components/boxviews/boxview-group/boxview-group.component';
+import { BoxpanelGroupsComponent } from './components/panels/boxpanel-groups/boxpanel-groups.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoxmanagerComponent
+    BoxmanagerComponent,
+    BoxviewGroupComponent,
+    BoxpanelGroupsComponent
   ],
   imports: [
     BggSqlMngrModule,
