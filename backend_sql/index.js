@@ -63,7 +63,7 @@ app.post('/insert', (req, res) => {
       return res.status(500).send('Error executing query');
     }
     console.log("Query executed successfully");
-    return res.status(200).send('Insert successful');
+    return res.status(200).json({sdata:"Insert OK"});
   });
 });
 

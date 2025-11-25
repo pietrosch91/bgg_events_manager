@@ -53,7 +53,9 @@ export class EV_BOXES_DB{
 
   add_box(box:BggBox){
     if(box.box_id===undefined){ //this is a new box, locally generated
-      http_utils.insert(box.insertQuery()).then(()=>{
+      http_utils.insert(box.insertQuery()).then((str)=>{
+        console.log("INSERT result=");
+        console.log(str);
         http_utils.select("SELECT * FROM EV_BOXES LEFT JOIN BGG ON EV_BOXES.box_bgg_id = BGG.id WHERE box_bgg_id = " + box.box_bgg_id + ";").then((data)=>{
           for(let row of data.sdata){
             let box_id=row.box_id;
