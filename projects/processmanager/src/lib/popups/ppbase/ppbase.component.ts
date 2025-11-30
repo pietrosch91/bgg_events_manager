@@ -23,6 +23,7 @@ export class PpbaseComponent {
       if(save) this.ppenv.target!.storeData(this.ppenv.varnames[i], this.values[i]);
       this.values[i]="";
     }
+    console.log("Serving process ",this.ppenv.target.processName);
     this.ppenv.target.hidePopup();
     this.ppenv.target.next();
   }
