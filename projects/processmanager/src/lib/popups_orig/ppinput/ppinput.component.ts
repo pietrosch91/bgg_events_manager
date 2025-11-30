@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { PopupIdentifier } from '../../processes/bgg-process';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PopupIdentifier, ProcessEnv, ProcessManagerService, ProcessStep } from '../../process-manager.service';
 import { PpbaseComponent } from '../ppbase/ppbase.component';
 
 
@@ -11,8 +11,8 @@ import { PpbaseComponent } from '../ppbase/ppbase.component';
 })
 export class PpinputComponent extends PpbaseComponent {
 
-  constructor() {
-    super();
+  constructor(override pm: ProcessManagerService) {
+    super(pm);
     this.id=PopupIdentifier.TEXT_INPUT;
     this.values=[""];
   }

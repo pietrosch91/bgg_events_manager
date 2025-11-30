@@ -13,7 +13,7 @@ import { MainnavbarComponent } from "./components/mainnavbar/mainnavbar.componen
 import { BoxmanagerComponent } from './components/panels/boxmanager/boxmanager.component';
 
 //internal OTHER MODULES
-import { ProcessmanagerModule,ProcessManagerService } from 'processmanager';
+import { ProcessmanagerModule} from 'processmanager';
 import { BggSqlMngrModule, BggSqlMngrService } from 'bgg-sql-mngr';
 import { BoxviewGroupComponent } from './components/boxviews/boxview-group/boxview-group.component';
 import { BoxpanelGroupsComponent } from './components/panels/boxpanel-groups/boxpanel-groups.component';
@@ -33,7 +33,7 @@ import { BoxpanelGroupsComponent } from './components/panels/boxpanel-groups/box
     MainnavbarComponent,
     A11yModule
 ],
-  providers: [BggSqlMngrService,ProcessManagerService],
+  providers: [BggSqlMngrService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

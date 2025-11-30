@@ -1,5 +1,5 @@
-import { Component} from '@angular/core';
-import { PopupIdentifier } from '../../processes/bgg-process';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PopupIdentifier, ProcessEnv, ProcessManagerService, ProcessStep } from '../../process-manager.service';
 import { PpbaseComponent } from '../ppbase/ppbase.component';
 
 @Component({
@@ -11,8 +11,8 @@ import { PpbaseComponent } from '../ppbase/ppbase.component';
 export class PpBarcodeComponent extends PpbaseComponent {
 
 
-  constructor() {
-    super();
+  constructor(override pm: ProcessManagerService) {
+    super(pm);
     console.log("Hidden input constructed");
     this.id=PopupIdentifier.BARCODE_INPUT;
     this.values=[""];
@@ -48,6 +48,6 @@ export class PpBarcodeComponent extends PpbaseComponent {
   onBlur($event:FocusEvent) {
     //console.log($event);
     //console.log("Focus lost");
-    this.ppenv.target!.hidden_input_refocus();
+    this.pm.hidden_input_refocus();
   }
 }

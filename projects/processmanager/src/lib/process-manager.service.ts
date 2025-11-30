@@ -296,7 +296,7 @@ export class ProcessManagerService {
                 break;
               }
               case ProcessStep.SEARCH_BGG_BY_TITLE:{
-                var searchresults=(await http_utils.search_bgg_by_title(this.PD.search_title!)).sdata;
+               var searchresults=(await http_utils.search_bgg_by_title(this.PD.search_title!)).sdata;
                 if(searchresults.length==0){
                   reportString+=" ABORTED";
                   console.log(reportString);

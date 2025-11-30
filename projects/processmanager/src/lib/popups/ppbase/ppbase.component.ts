@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PopupIdentifier, ProcessEnv, ProcessManagerService, ProcessStep } from '../../process-manager.service';
+import { PopupIdentifier, ProcessEnv } from '../../processes/bgg-process'
 
 @Component({
   selector: 'lib-ppbase',
@@ -11,23 +11,26 @@ export class PpbaseComponent {
 
   public id=PopupIdentifier.NONE;
   public env=ProcessEnv;
+  public ppenv=ProcessEnv.popups;
   public values:any[]=[];
 
 
-  constructor (protected pm:ProcessManagerService){}
+  constructor (){}
 
-  confirm(state_index:number =0){
+  confirm(save:boolean=true){
+    if(this.ppenv.target===undefined) return;
     for(let i=0;i<this.values.length;i++){
-      this.pm.storeData(this.env.popups.varnames[i], this.values[i]);
+      if(save) this.ppenv.target!.storeData(this.ppenv.varnames[i], this.values[i]);
       this.values[i]="";
     }
-    this.pm.setNextStep(this.env.popups.steps[state_index]);
-    this.pm.hidePopup();
-    this.pm.nextStep();
+    this.ppenv.target.hidePopup();
+    this.ppenv.target.next();
   }
 
   cancel(){
-    this.pm.abort("Aborted by user");
-    this.pm.hidePopup();
+    if(this.ppenv.target===undefined) return;
+    this.ppenv.target.hidePopup();
+    this.ppenv.target.abort();
+    this.ppenv.target.next();
   }
 }

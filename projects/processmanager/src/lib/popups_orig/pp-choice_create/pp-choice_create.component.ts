@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PpbaseComponent } from '../ppbase/ppbase.component';
-import { PopupIdentifier } from '../../processes/bgg-process';
+import { PopupIdentifier, ProcessManagerService } from '../../process-manager.service';
 
 
 @Component({
@@ -15,8 +15,8 @@ export class PpChoiceCreateComponent extends PpbaseComponent{
       this.values[0]=this.env.popups.options[value].val;
     }
 
-    constructor() {
-      super();
+    constructor(override pm: ProcessManagerService) {
+      super(pm);
       this.id=PopupIdentifier.CHOICE_CREATE_INPUT;
       this.values=[0];
     }

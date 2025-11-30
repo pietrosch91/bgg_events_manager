@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BggSqlMngrService } from 'bgg-sql-mngr';
-import { ProcessManagerService, ProcessType } from 'processmanager';
+import { BoxCreation, } from 'processmanager';
 
 @Component({
   selector: 'app-boxmanager',
@@ -9,12 +9,15 @@ import { ProcessManagerService, ProcessType } from 'processmanager';
   styleUrl: './boxmanager.component.css',
 })
 export class BoxmanagerComponent {
+
+  create_box=new BoxCreation();
+
   start_create(){
-    this.procmngr.start_process(ProcessType.BOX_CREATION);
+    this.create_box.init();
   }
 
   dump_local(){
     this.sqlmanager.dump_local_db();
   }
-  constructor(private procmngr:ProcessManagerService,private sqlmanager:BggSqlMngrService){}
+  constructor(private sqlmanager:BggSqlMngrService){}
 }
